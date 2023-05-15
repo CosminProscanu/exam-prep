@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--    this is code related to the website's details such as title, encodings-->
+    <meta charset="UTF-8">
+    <title>Exam Preparation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- we also need to import jQuery in order to use it in our code    -->
+</head>
+<body>
+<h1> We will get ready for the exam!</h1>
+
+<h2>Customer details</h2>
+<div>
+    <label>Customer name</label><br>
+    <input type="text"  id="customerName"><br>
+    <label>Customer surname</label><br>
+    <input type="text" id="customerSurname"><br>
+    <label>Email address </label><br><br>
+    <input type="text" id="email"/><br>
+    <label>Phone number </label><br>
+    <input type="text" id="phone" onchange="phoneNumberValidation()"/><br>
+    <label>City</label><br>
+    <input type="text" id="city"/><br>
+    <label>Street</label><br>
+    <input type="text" id="street"/><br>
+
+    <button onclick="sendNewClient()">Add new customer </button>
+</div>
+<script>
+function sendNewClient() {
+    const customerDTO = {       // created an object to grab the info from the inputs
+        customerName: $("#customerName").val(), // ! TAKE CARE of the attribute names
+        customerSurname: $("#customerSurname").val(),
+        email: $("#email").val(),
+        phone: $("#phone").val(),
+        city: $("#city").val(),
+        street: $("#street").val(),
+    }
+    console.log(customerDTO);  // we showed this object in the console, it's good for debugging
+
+    $.ajax({
+        type: 'post',      ///this is where you define the HTTP request you will use
+        url: '/saveClient',
+        async: false,
+        data: JSON.stringify(customerDTO), //we package the information as a JSON in order to send it to the SPring server
+        contentType: "application/json",
+        dataType: "json",
+        success: function (result, status, xhr) {
+            console.log(result);
+        }
+    })
+}
+function phoneNumberValidation() {
+    let input_str = $("#phone").val();
+    let re = /^[0-9]{8}$/;
+   if(!re.test(input_str)){
+       alert("phone number not ok");
+   }
+}
+
+</script>
+</body>
+</html>
