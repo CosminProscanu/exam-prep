@@ -17,7 +17,6 @@ public class CustomerDTO {   /// ! TAKE CARE of the attribute names
                 private String phone;
                 private String city;
                 private String street;
-
     @Override
     public String toString() {
         return "CustomerDTO{" +
@@ -28,5 +27,12 @@ public class CustomerDTO {   /// ! TAKE CARE of the attribute names
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
                 '}';
+    }
+
+    public CustomerDTO( String customerName, String customerSurname, String email, String phone) {
+        this.customerName = customerName;
+        this.customerSurname = customerSurname;
+        this.email = email;
+        this.phone = phone;
     }
 }

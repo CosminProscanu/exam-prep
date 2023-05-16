@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,5 +57,30 @@ public class CustomerController {
         customerListJohns.forEach(customer -> {customer.setEmail("No longer interested in this customer");
                                                 customerRepository.save(customer);});
     }
+
+    @GetMapping("/getCustomersDTO")
+    public List<CustomerDTO> getCustomersDTO(){
+        // we create a list of empty customerDTO that will be sent back as a response
+        List<CustomerDTO> customerDTOS = new ArrayList<>();
+
+        //we interrogate the DB in order to get all the customers and all the address
+        List<Customer> customerList = customerRepository.findAll();
+        List<Address> addressList = addressRepository.findAll();
+
+        //we start adding all the details of the customers we have in the DB into our customerDTO
+        customerList.forEach(c-> customerDTOS.add(new CustomerDTO(c.getName(),c.getSurname(),c.getEmail(),c.getPhone())));
+
+        // we also have to add the address for each customer
+        int index = 0;
+       for(CustomerDTO c : customerDTOS){
+           c.setCity(addressList.get(index).getCity());
+           c.setStreet(addressList.get(index).getStreet());
+           index++;
+       }
+
+        return customerDTOS;
+    }
+
+
 
 }
